@@ -15,7 +15,7 @@ class Game {
     this.handleClick = this.handleClick.bind(this);
     this.makeBoard();
     this.makeHtmlBoard();
-    
+
   }
 
   makeBoard() {
@@ -44,7 +44,7 @@ class Game {
 
     for (let y = 0; y < this.height; y++) {
       const row = document.createElement('tr');
-      
+
       for (let x = 0; x < this.width; x++) {
         const cell = document.createElement('td');
         cell.setAttribute('id', `y-${y}-x-${x}`);
@@ -65,7 +65,7 @@ class Game {
   }
 
   handleClick(evt) {
-    
+
     // get x from ID of clicked cell
     const x = +evt.target.id;
 
@@ -79,9 +79,10 @@ class Game {
     // place piece in board and add to HTML table
     this.board[y][x] = this.currPlayer;
     this.placeInTable(y, x);
+    console.log('we are here x= ', x, 'and y = ', y);
 
     // check for win
-    if (checkForWin()) {
+    if (this.checkForWin()) {
       return endGame(`Player ${this.currPlayer} won!`);
     }
 
@@ -95,6 +96,7 @@ class Game {
   }
 
   placeInTable(y, x) {
+
     const piece = document.createElement('div');
     piece.classList.add('piece');
     piece.classList.add(`p${this.currPlayer}`);
@@ -110,19 +112,26 @@ class Game {
 
   checkForWin() {
     function _win(cells) {
+      let height;
+      let width;
+      let board;
+      let currPlayer;
       // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
       //  - returns true if all are legal coordinates & all match currPlayer
-
+      //console.log('we are in the _win function');
+      //console.log(`board ${board[y][x]}`);
       return cells.every(
         ([y, x]) =>
           y >= 0 &&
-          y < this.height &&
+          y < height &&
           x >= 0 &&
-          x < this.width &&
-          this.board[y][x] === this.currPlayer
+          x < width &&
+          board[y][x] === currPlayer
       );
     }
+
+    console.log('we are now here!!!!!!!!!!');
 
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
